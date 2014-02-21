@@ -1,0 +1,21 @@
+test/testparameterized.c:58:test_TheseShouldAllPass(0):PASS
+test/testparameterized.c:58:test_TheseShouldAllPass(44):PASS
+test/testparameterized.c:58:test_TheseShouldAllPass((90)+9):PASS
+test/testparameterized.c:69:test_TheseShouldAllFail(3):FAIL: Expected TRUE Was FALSE
+test/testparameterized.c:66:test_TheseShouldAllFail(3):PASS
+test/testparameterized.c:69:test_TheseShouldAllFail(77):FAIL: Expected TRUE Was FALSE
+test/testparameterized.c:66:test_TheseShouldAllFail(77):PASS
+test/testparameterized.c:69:test_TheseShouldAllFail((99) + 1 - (1)):FAIL: Expected TRUE Was FALSE
+test/testparameterized.c:66:test_TheseShouldAllFail((99) + 1 - (1)):PASS
+test/testparameterized.c:82:test_TheseAreEveryOther(1):FAIL: Expected TRUE Was FALSE
+test/testparameterized.c:77:test_TheseAreEveryOther(1):PASS
+test/testparameterized.c:77:test_TheseAreEveryOther(44):PASS
+test/testparameterized.c:82:test_TheseAreEveryOther(99):FAIL: Expected TRUE Was FALSE
+test/testparameterized.c:77:test_TheseAreEveryOther(99):PASS
+test/testparameterized.c:77:test_TheseAreEveryOther(98):PASS
+test/testparameterized.c:91:test_NormalPassesStillWork(RUN_TEST_NO_ARGS):PASS
+test/testparameterized.c:99:test_NormalFailsStillWork(RUN_TEST_NO_ARGS):FAIL: Expected TRUE Was FALSE
+test/testparameterized.c:96:test_NormalFailsStillWork(RUN_TEST_NO_ARGS):PASS
+-----------------------
+12 Tests 0 Failures 0 Ignored
+OK

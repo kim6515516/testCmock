@@ -17,8 +17,9 @@ typedef struct {
 
 typedef struct {
     int listCount;  /* count of dfPrintFormat list */
+    int terrno; /* erron for result */
     diskSpaceStat fileSystem[STRUCT_LIST_SIZE];
-} diskSpaceStatParce;
+} diskSpaceStatList;
 
-diskSpaceStatParce *GetFileSystemInfo(void); /* save result screen of "df -B 1" */
+diskSpaceStatList *GetFileSystemInfo(void); /* save result screen of "df -B 1" */
 

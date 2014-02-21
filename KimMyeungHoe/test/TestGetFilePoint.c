@@ -2,6 +2,7 @@
 #include "GetFilePoint.h"
 
 char *outputDf;
+filePointAndErrno _filePointer;
 
 void setUp(void)
 {
@@ -11,7 +12,8 @@ License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.\n
 This is free software: you are free to change and redistribute it.\n\
 There is NO WARRANTY, to the extent permitted by law.\n\
 \n\
-Written by Torbjörn Granlund, David MacKenzie, and Paul Eggert.\n";
+Written by Torbjörn Granlund, David MacKenzie, and Paul Eggert.";
+
 }
 
 void tearDown(void)
@@ -19,14 +21,33 @@ void tearDown(void)
 
 }
 
-void test_GetFilePoint(void)
+void test_GetFilePoint_ShouldReturnCurrentCounter_ButFailsBecauseThisTestIsActuallyFlawed(void)
 {
     char buffReadFile[2000];
-    memset(buffReadFile, 0, 2000);
+    filePointAndErrno filePointer;
     int len;
 
-    len = fread(buffReadFile, 2000, 2000, GetFilePoint("df --version"));
+    _filePointer.pOpen = NULL;
+    _filePointer.terrno = 0;
+
+    memset(buffReadFile, 0, 2000);
+    filePointer = GetFilePoint("df --version");
+    if (filePointer.terrno != 0){
+         TEST_FAIL_MESSAGE("GetFilePoint Failed : error...");
+    }
+    len = fread(buffReadFile, 2000, 2000, filePointer.pOpen);
     buffReadFile[strlen(buffReadFile) - 1] = '\0';
     TEST_ASSERT_EQUAL_STRING(outputDf, buffReadFile);
+}
 
+void test_GetFilePoint_failedToCmdIsNull(void)
+{
+    char buffReadFile[2000];
+    filePointAndErrno filePointer;
+    _filePointer.pOpen = NULL;
+    _filePointer.terrno = 0;
+    filePointer = GetFilePoint(NULL);
+    if (filePointer.terrno != 0){
+         TEST_FAIL_MESSAGE("GetFilePoint Failed : Command is NULL");
+    }
 }

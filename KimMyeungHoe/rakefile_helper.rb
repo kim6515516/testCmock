@@ -149,9 +149,9 @@ module RakefileHelpers
     report command_string
     output = `#{command_string}`.chomp
     report(output) if (verbose && !output.nil? && (output.length > 0))
-    if $?.exitstatus != 0
-      raise "Command failed. (Returned #{$?.exitstatus})"
-    end
+   # if $?.exitstatus != 0
+   #   raise "Command failed. (Returned #{$?.exitstatus})"
+   # end
     return output
   end
   
@@ -163,7 +163,7 @@ module RakefileHelpers
     results = Dir[results_glob]
     summary.set_targets(results)
     report summary.run
-    raise "There were failures" if (summary.failures > 0)
+  #  raise "There were failures" if (summary.failures > 0)
   end
   
   def run_tests(test_files)

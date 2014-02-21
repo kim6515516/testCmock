@@ -5,6 +5,9 @@ require 'rake/clean'
 require 'rake/testtask'
 require './rakefile_helper'
 
+require '../config/test_environment'
+
+
 include RakefileHelpers
 
 # Load default configuration, for now
