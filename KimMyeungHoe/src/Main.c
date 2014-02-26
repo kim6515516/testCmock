@@ -2,16 +2,16 @@
 
 void main(void)
 {
-	diskSpaceStatList *pDiskSpaceStatList = NULL;
-	pDiskSpaceStatList = GetFileSystemInfo();
+	diskSpaceStats *pDiskSpaceStats = NULL;
+	pDiskSpaceStats = GetFileSystemInfo();
     
-    if (pDiskSpaceStatList == NULL) {
+    if (pDiskSpaceStats == NULL) {
         printf("failed to get a infomation of filesystem\n");
     }
-    if (pDiskSpaceStatList->terrno == 1) {    	
+    if (pDiskSpaceStats->terrno == 1) {    	
         printf("failed to peopen() \n");
     }
-    if (pDiskSpaceStatList->terrno == 2) {    	
+    if (pDiskSpaceStats->terrno == 2) {    	
         printf("failed to excute a commnd \n");
     }
 }

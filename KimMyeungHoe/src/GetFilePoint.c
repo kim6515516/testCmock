@@ -1,22 +1,22 @@
 #include "GetFilePoint.h"
 
 
-filePointAndErrno GetFilePoint(char *pInputCommand)
+struct filePointAndErrno GetFilePoint(char *pInputCommand)
 {
-    filePointAndErrno filePointer = {NULL, 0};
-    FILE *pfPopen = NULL; /* File pointer of popen(); */
+    struct filePointAndErrno filePointer = {NULL, 0};
+    FILE *pFilePointer = NULL;/* File pointer of popen(); */
 
     if (pInputCommand == NULL) {
-        printf("Error: InputCommand is null ");
-        filePointer.terrno = 5;
+        printf("Error: InputCommand is null\n");
+        filePointer.result = 5;
         return filePointer;
     }
-    pfPopen = popen(pInputCommand, "r");  /* excute a command  */
-    if (pfPopen == NULL) {
+    pFilePointer = popen(pInputCommand, "r");/* excute a command  */
+    if (pFilePointer == NULL) {
         printf("Error: open popen(): %s\n", strerror(errno));
-        filePointer.terrno = errno;
+        filePointer.result = errno;
         return filePointer;
     }
-    filePointer.pOpen = pfPopen;
+    filePointer.pOpen = pFilePointer;
     return filePointer;
 }

@@ -2,9 +2,9 @@
 #include <string.h>
 #include "errno.h"
 
-typedef struct {
+struct filePointAndErrno {
     FILE *pOpen;
-    int terrno;
-} filePointAndErrno;
+    int result;
+};
 
-filePointAndErrno GetFilePoint(char *pCmd); /* get FILE pointer */
+struct filePointAndErrno GetFilePoint(char *pCmd); /* get FILE pointer */

@@ -2,7 +2,7 @@
 #include "GetFilePoint.h"
 
 char *outputDf;
-filePointAndErrno _filePointer;
+struct filePointAndErrno fileDescript;
 
 void setUp(void)
 {
@@ -21,18 +21,18 @@ void tearDown(void)
 
 }
 
-void test_GetFilePoint_ShouldReturnCurrentCounter_ButFailsBecauseThisTestIsActuallyFlawed(void)
+void test_GetFilePoint_ShouldReturnDfVersion(void)
 {
     char buffReadFile[2000];
-    filePointAndErrno filePointer;
+    struct filePointAndErrno filePointer;
     int len;
 
-    _filePointer.pOpen = NULL;
-    _filePointer.terrno = 0;
+    fileDescript.pOpen = NULL;
+    fileDescript.result = 0;
 
     memset(buffReadFile, 0, 2000);
     filePointer = GetFilePoint("df --version");
-    if (filePointer.terrno != 0){
+    if (filePointer.result != 0) {
          TEST_FAIL_MESSAGE("GetFilePoint Failed : error...");
     }
     len = fread(buffReadFile, 2000, 2000, filePointer.pOpen);
@@ -43,11 +43,11 @@ void test_GetFilePoint_ShouldReturnCurrentCounter_ButFailsBecauseThisTestIsActua
 void test_GetFilePoint_failedToCmdIsNull(void)
 {
     char buffReadFile[2000];
-    filePointAndErrno filePointer;
-    _filePointer.pOpen = NULL;
-    _filePointer.terrno = 0;
+    struct filePointAndErrno filePointer;
+    fileDescript.pOpen = NULL;
+    fileDescript.result = 0;
     filePointer = GetFilePoint(NULL);
-    if (filePointer.terrno != 0){
+    if (filePointer.result != 0) {
          TEST_FAIL_MESSAGE("GetFilePoint Failed : Command is NULL");
     }
 }

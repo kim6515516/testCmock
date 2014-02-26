@@ -3,81 +3,82 @@
 #include "MockGetFilePoint.h"
 
 char *outputDf;
-diskSpaceStatList *ptDiskSpaceStatList;
+struct diskSpaceStats *pdiskSpaceStats;
 FILE *pMockFile;
-filePointAndErrno filePointer;
+struct filePointAndErrno fileDescript;
 
 void setUp(void)
 {
     outputDf = "Filesystem       1B-blocks        Used   Available Use% Mounted on\n\
     /dev/sda1      52760793088 14228803584 35845013504  29% /";
     pMockFile = fmemopen(outputDf, strlen(outputDf), "rw");
-    filePointer.pOpen = pMockFile;
-    filePointer.terrno = 0;
+    fileDescript.pOpen = pMockFile;
+    fileDescript.result = 0;
 
-    ptDiskSpaceStatList = (diskSpaceStatList *)malloc(sizeof(diskSpaceStatList));
-    strcpy(ptDiskSpaceStatList->fileSystem[0].fileSystemName, "/dev/sda1");
-    strcpy(ptDiskSpaceStatList->fileSystem[0].blockSize, "52760793088");
-    strcpy(ptDiskSpaceStatList->fileSystem[0].used, "14228803584");
-    strcpy(ptDiskSpaceStatList->fileSystem[0].avalable, "35845013504");
-    strcpy(ptDiskSpaceStatList->fileSystem[0].usagePercent, "29%");
-    strcpy(ptDiskSpaceStatList->fileSystem[0].mountOn, "/");
+    pdiskSpaceStats = (struct diskSpaceStats *)malloc(sizeof(struct diskSpaceStats));
+    strcpy(pdiskSpaceStats->fileSystem[0].fileSystemName, "/dev/sda1");
+    strcpy(pdiskSpaceStats->fileSystem[0].blockSize, "52760793088");
+    strcpy(pdiskSpaceStats->fileSystem[0].used, "14228803584");
+    strcpy(pdiskSpaceStats->fileSystem[0].avalable, "35845013504");
+    strcpy(pdiskSpaceStats->fileSystem[0].usagePercent, "29%");
+    strcpy(pdiskSpaceStats->fileSystem[0].mountOn, "/");
 }
 
 void tearDown(void)
 {
-    free(ptDiskSpaceStatList);
+    free(pdiskSpaceStats);
 }
 
 void test_GetFileSystemsInfo(void)
 {
-    GetFilePoint_ExpectAndReturn("df -B 1", filePointer);  /* make a mock for getFilePointFromPopen(); */
-    diskSpaceStatList *pDiskSpaceStatList = GetFileSystemInfo();  /* get output of "df -B 1" using mocking ; */
-    TEST_ASSERT_EQUAL_STRING(ptDiskSpaceStatList->fileSystem[0].fileSystemName, pDiskSpaceStatList->fileSystem[1].fileSystemName);
-    free(pDiskSpaceStatList);
+    GetFilePoint_ExpectAndReturn("df -B 1", fileDescript);/* make a mock for getFilePointFromPopen() */
+    struct diskSpaceStats *pdiskSpaceStats = GetFileSystemInfo();/* get output of "df -B 1" using mocking */
+    TEST_ASSERT_EQUAL_STRING(pdiskSpaceStats->fileSystem[0].fileSystemName, \
+    pdiskSpaceStats->fileSystem[1].fileSystemName);
+    free(pdiskSpaceStats);
 }
 
 void test_GetFileSystemsInfoFailedToCasePopenError(void)
 {
-    filePointer.pOpen = NULL;
-    filePointer.terrno = 1;
-    GetFilePoint_ExpectAndReturn("df -B 1", filePointer);  /* make a mock for getFilePointFromPopen(); */
-    diskSpaceStatList *pDiskSpaceStatList = GetFileSystemInfo();  /* get output of "df -B 1" using mocking ; */
+    fileDescript.pOpen = NULL;
+    fileDescript.result = 1;
+    GetFilePoint_ExpectAndReturn("df -B 1", fileDescript);/* make a mock for getFilePointFromPopen() */
+    struct diskSpaceStats *pdiskSpaceStats = GetFileSystemInfo();/* get output of "df -B 1" using mocking */
 
-    if (pDiskSpaceStatList->terrno != 0) {
+    if (pdiskSpaceStats->result != 0) {
          TEST_FAIL_MESSAGE("GetFileSystemInfo Failed : popen() error");
     }
-    free(pDiskSpaceStatList);
+    free(pdiskSpaceStats);
 }
 
 void test_GetFileSystemsInfoFailedToCaseWrongOutFromCommand(void)
 {
     char *wrongOutput = "not foufdf dfs asdfsdf fsdf adfs sdlsdlflsd asdf";
     pMockFile = fmemopen(wrongOutput, strlen(wrongOutput), "rw");
-    filePointer.pOpen = pMockFile;
-    filePointer.terrno = 0;
-    GetFilePoint_ExpectAndReturn("df -B 1", filePointer);  /* make a mock for getFilePointFromPopen(); */
-    diskSpaceStatList *pDiskSpaceStatList = GetFileSystemInfo();  /* get output of "df -B 1" using mocking ; */
-    if (pDiskSpaceStatList->terrno != 0) {
+    fileDescript.pOpen = pMockFile;
+    fileDescript.result = 0;
+    GetFilePoint_ExpectAndReturn("df -B 1", fileDescript);/* make a mock for getFilePointFromPopen() */
+    struct diskSpaceStats *pdiskSpaceStats = GetFileSystemInfo();/* get output of "df -B 1" using mocking */
+    if (pdiskSpaceStats->result != 0) {
          TEST_FAIL_MESSAGE("GetFileSystemInfo Failed : wrong output from command");
     }
-    free(pDiskSpaceStatList);
+    free(pdiskSpaceStats);
 }
 void test_GetFileSystemsInfoFailedToCaseNotFoundCommand(void)
 {
     char *wrongOutput = "";
     pMockFile = fmemopen(wrongOutput, strlen(wrongOutput), "rw");
     if (pMockFile == NULL) {
-        filePointer.pOpen = NULL;
-        filePointer.terrno = 1;
+        fileDescript.pOpen = NULL;
+        fileDescript.result = 1;
     } else {
-        filePointer.pOpen = pMockFile;
-        filePointer.terrno = 0;
+        fileDescript.pOpen = pMockFile;
+        fileDescript.result = 0;
     }
-    GetFilePoint_ExpectAndReturn("df -B 1", filePointer);  /* make a mock for getFilePointFromPopen(); */
-    diskSpaceStatList *pDiskSpaceStatList = GetFileSystemInfo();  /* get output of "df -B 1" using mocking ; */
-    if (pDiskSpaceStatList->terrno != 0) {
+    GetFilePoint_ExpectAndReturn("df -B 1", fileDescript);/* make a mock for getFilePointFromPopen() */
+    struct diskSpaceStats *pdiskSpaceStats = GetFileSystemInfo();/* get output of "df -B 1" using mocking */
+    if (pdiskSpaceStats->result != 0) {
          TEST_FAIL_MESSAGE("GetFileSystemInfo Failed : not find Command");
     }
-    free(pDiskSpaceStatList);
+    free(pdiskSpaceStats);
 }
