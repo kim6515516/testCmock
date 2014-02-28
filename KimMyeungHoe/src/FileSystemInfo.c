@@ -1,6 +1,5 @@
-#include "GetFileSystemInfo.h"
-#include "GetFilePoint.h"
-
+#include "FileSystemInfo.h"
+#include "FilePointer.h"
 
 struct diskSpaceStats *GetFileSystemInfo(void)
 {
@@ -46,12 +45,10 @@ struct diskSpaceStats *GetFileSystemInfo(void)
         strcpy(pDiskSpaceStats->fileSystem[pDiskSpaceStats->listCount].mountOn, pStrtok);
         pDiskSpaceStats->listCount++;
     }
-
     if (pDiskSpaceStats->listCount == 0) {/* if command is invaild */
         pDiskSpaceStats->result = 2;
         return pDiskSpaceStats;
     }
-
     /* if command has wrong output */
     if (strcmp(pDiskSpaceStats->fileSystem[0].fileSystemName, "Filesystem") != 0) {
         pDiskSpaceStats->result = 3;
@@ -61,4 +58,3 @@ struct diskSpaceStats *GetFileSystemInfo(void)
     pclose(pFilePointer);
     return pDiskSpaceStats;
 }
-

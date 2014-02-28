@@ -6,5 +6,4 @@ struct filePointAndErrno {
     FILE *pOpen;
     int result;
 };
-
 struct filePointAndErrno GetFilePoint(char *pCmd); /* get FILE pointer */

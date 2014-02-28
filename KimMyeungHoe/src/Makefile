@@ -2,16 +2,16 @@ CC = gcc
 CFLAGS = -W -Wall -O2
 LDFLAGS = -lm
 
-all : Main GetFileSystemsInfo GetFilePointFromPopen		
-		$(CC) $(CFLAGS) -o Main Main.o GetFileSystemInfo.o GetFilePoint.o $(LDFLAGS)
+all : Main FileSystemsInfo FilePointFromPopen		
+		$(CC) $(CFLAGS) -o Main Main.o FileSystemInfo.o FilePointer.o $(LDFLAGS)
 Main : Main.c
 		$(CC) $(CFLAGS) -c Main.c
 
-GetFileSystemsInfo : GetFileSystemInfo.c
-		$(CC) $(CFLAGS) -c GetFileSystemInfo.c
+FileSystemsInfo : FileSystemInfo.c
+		$(CC) $(CFLAGS) -c FileSystemInfo.c
 
-GetFilePointFromPopen : GetFilePoint.c
-		$(CC) $(CFLAGS) -c GetFilePoint.c
+FilePointFromPopen : FilePointer.c
+		$(CC) $(CFLAGS) -c FilePointer.c
 
 clean  :
 		@rm -rf *.o Main *~

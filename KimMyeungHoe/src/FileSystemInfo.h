@@ -22,4 +22,3 @@ struct diskSpaceStats {
 };
 
 struct diskSpaceStats *GetFileSystemInfo(void);/* saved result screen of "df -B 1" */
-

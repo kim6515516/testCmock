@@ -1,5 +1,4 @@
-#include "GetFilePoint.h"
-
+#include "FilePointer.h"
 
 struct filePointAndErrno GetFilePoint(char *pInputCommand)
 {

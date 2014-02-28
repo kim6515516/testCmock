@@ -13,6 +13,7 @@ compiler:
       - '../vendor/unity/src/'
       - '../vendor/unity/examples/helper/'
       - 'mocks/'
+      - '../vendor/c_exception/lib/'
       - *unit_tests_path
   defines:
     prefix: '-D'

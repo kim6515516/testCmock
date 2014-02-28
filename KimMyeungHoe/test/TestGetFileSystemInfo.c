@@ -1,11 +1,13 @@
 #include "unity.h"
-#include "GetFileSystemInfo.h"
-#include "MockGetFilePoint.h"
+#include "CException.h"
+#include "FileSystemInfo.h"
+#include "MockFilePointer.h"
 
 char *outputDf;
 struct diskSpaceStats *pdiskSpaceStats;
 FILE *pMockFile;
 struct filePointAndErrno fileDescript;
+CEXCEPTION_T e;
 
 void setUp(void)
 {
@@ -45,9 +47,15 @@ void test_GetFileSystemsInfoFailedToCasePopenError(void)
     GetFilePoint_ExpectAndReturn("df -B 1", fileDescript);/* make a mock for getFilePointFromPopen() */
     struct diskSpaceStats *pdiskSpaceStats = GetFileSystemInfo();/* get output of "df -B 1" using mocking */
 
-    if (pdiskSpaceStats->result != 0) {
-         TEST_FAIL_MESSAGE("GetFileSystemInfo Failed : popen() error");
+    Try {
+		if (pdiskSpaceStats->result != 0) {
+			 Throw(0x00);
+		}
     }
+    Catch(e) {
+        TEST_FAIL_MESSAGE("GetFileSystemInfo Failed : popen() error in Exception");
+    }
+
     free(pdiskSpaceStats);
 }
 
@@ -59,9 +67,15 @@ void test_GetFileSystemsInfoFailedToCaseWrongOutFromCommand(void)
     fileDescript.result = 0;
     GetFilePoint_ExpectAndReturn("df -B 1", fileDescript);/* make a mock for getFilePointFromPopen() */
     struct diskSpaceStats *pdiskSpaceStats = GetFileSystemInfo();/* get output of "df -B 1" using mocking */
-    if (pdiskSpaceStats->result != 0) {
-         TEST_FAIL_MESSAGE("GetFileSystemInfo Failed : wrong output from command");
+    Try {
+		if (pdiskSpaceStats->result != 0) {
+			 Throw(0x00);
+		}
     }
+    Catch(e) {
+        TEST_FAIL_MESSAGE("GetFileSystemInfo Failed : wrong output from command in Exception");
+    }
+
     free(pdiskSpaceStats);
 }
 void test_GetFileSystemsInfoFailedToCaseNotFoundCommand(void)
@@ -77,8 +91,13 @@ void test_GetFileSystemsInfoFailedToCaseNotFoundCommand(void)
     }
     GetFilePoint_ExpectAndReturn("df -B 1", fileDescript);/* make a mock for getFilePointFromPopen() */
     struct diskSpaceStats *pdiskSpaceStats = GetFileSystemInfo();/* get output of "df -B 1" using mocking */
-    if (pdiskSpaceStats->result != 0) {
-         TEST_FAIL_MESSAGE("GetFileSystemInfo Failed : not find Command");
+    Try {
+		if (pdiskSpaceStats->result != 0) {
+			 Throw(0x00);
+		}
     }
+    Catch(e) {
+        TEST_FAIL_MESSAGE("GetFileSystemInfo Failed : not find Command in Exception");
+    }    
     free(pdiskSpaceStats);
 }
