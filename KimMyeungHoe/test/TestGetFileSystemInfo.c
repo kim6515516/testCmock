@@ -48,9 +48,9 @@ void test_GetFileSystemsInfoFailedToCasePopenError(void)
     struct diskSpaceStats *pdiskSpaceStats = GetFileSystemInfo();/* get output of "df -B 1" using mocking */
 
     Try {
-		if (pdiskSpaceStats->result != 0) {
-			 Throw(0x00);
-		}
+        if (pdiskSpaceStats->result != 0) {
+            Throw(0x00);
+        }
     }
     Catch(e) {
         TEST_FAIL_MESSAGE("GetFileSystemInfo Failed : popen() error in Exception");
@@ -66,11 +66,12 @@ void test_GetFileSystemsInfoFailedToCaseWrongOutFromCommand(void)
     fileDescript.pOpen = pMockFile;
     fileDescript.result = 0;
     GetFilePoint_ExpectAndReturn("df -B 1", fileDescript);/* make a mock for getFilePointFromPopen() */
+
     struct diskSpaceStats *pdiskSpaceStats = GetFileSystemInfo();/* get output of "df -B 1" using mocking */
     Try {
-		if (pdiskSpaceStats->result != 0) {
-			 Throw(0x00);
-		}
+        if (pdiskSpaceStats->result != 0) {
+            Throw(0x00);
+        }
     }
     Catch(e) {
         TEST_FAIL_MESSAGE("GetFileSystemInfo Failed : wrong output from command in Exception");
@@ -89,15 +90,17 @@ void test_GetFileSystemsInfoFailedToCaseNotFoundCommand(void)
         fileDescript.pOpen = pMockFile;
         fileDescript.result = 0;
     }
+
     GetFilePoint_ExpectAndReturn("df -B 1", fileDescript);/* make a mock for getFilePointFromPopen() */
     struct diskSpaceStats *pdiskSpaceStats = GetFileSystemInfo();/* get output of "df -B 1" using mocking */
     Try {
-		if (pdiskSpaceStats->result != 0) {
-			 Throw(0x00);
-		}
+        if (pdiskSpaceStats->result != 0) {
+            Throw(0x00);
+        }
     }
     Catch(e) {
         TEST_FAIL_MESSAGE("GetFileSystemInfo Failed : not find Command in Exception");
-    }    
+    }
+
     free(pdiskSpaceStats);
 }
